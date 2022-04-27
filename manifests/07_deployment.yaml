@@ -22,9 +22,17 @@ spec:
       labels:
         app: kube-storage-version-migrator-operator
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: kube-storage-version-migrator-operator
       containers:
       - name: kube-storage-version-migrator-operator
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
         terminationMessagePolicy: FallbackToLogsOnError
         image: quay.io/openshift/origin-cluster-kube-storage-version-migrator-operator:v4.4
         ports:
